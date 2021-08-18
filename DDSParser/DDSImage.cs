@@ -157,14 +157,13 @@ namespace DDSParser
 
         private static DDSHeaderDXT10 ParseDXT10Header(BinaryBufferReader reader)
         {
-            var header = new DDSHeaderDXT10
-            {
-                Format = (DXGIFormat)reader.ReadUInt32(),
-                ResourceDimension = (DDSResourceDimension)reader.ReadUInt32(),
-                MiscFlag = (DDSResourceMiscFlag)reader.ReadUInt32(),
-                ArraySize = reader.ReadUInt32(),
-                AlphaMode = (DDSAlphaMode)reader.ReadUInt32()
-            };
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var header = new DDSHeaderDXT10();
+            header.Format = (DXGIFormat)reader.ReadUInt32();
+            header.ResourceDimension = (DDSResourceDimension)reader.ReadUInt32();
+            header.MiscFlag = (DDSResourceMiscFlag)reader.ReadUInt32();
+            header.ArraySize = reader.ReadUInt32();
+            header.AlphaMode = (DDSAlphaMode)reader.ReadUInt32();
 
             return header;
         }

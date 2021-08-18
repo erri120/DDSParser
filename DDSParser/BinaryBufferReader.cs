@@ -23,7 +23,7 @@ namespace DDSParser
 
         private ReadOnlySpan<byte> GetSpan(int size)
         {
-            var span = _data.AsSpan(_pos, _pos + size);
+            var span = new ReadOnlySpan<byte>(_data, _pos, size);
             _pos += size;
 
             return span;

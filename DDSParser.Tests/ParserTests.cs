@@ -1,24 +1,105 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Xunit;
 
 namespace DDSParser.Tests
 {
     public class ParserTests
     {
-        [Fact]
-        public void TestDDSFileParser()
+        [Theory]
+        [InlineData("A8_UNORM.dds")]
+        [InlineData("AYUV.dds")]
+        [InlineData("B4G4R4A4_UNORM.dds")]
+        [InlineData("B5G5R5A1_UNORM.dds")]
+        [InlineData("B5G6R5_UNORM.dds")]
+        [InlineData("B8G8R8A8_UNORM_SRGB.dds")]
+        [InlineData("B8G8R8A8_UNORM.dds")]
+        [InlineData("B8G8R8X8_UNORM_SRGB.dds")]
+        [InlineData("B8G8R8X8_UNORM.dds")]
+        [InlineData("BC1_UNORM_SRGB.dds")]
+        [InlineData("BC1_UNORM.dds")]
+        [InlineData("BC2_UNORM_SRGB.dds")]
+        [InlineData("BC2_UNORM.dds")]
+        [InlineData("BC3_UNORM_SRGB.dds")]
+        [InlineData("BC3_UNORM.dds")]
+        [InlineData("BC4_SNORM.dds")]
+        [InlineData("BC4_UNORM.dds")]
+        [InlineData("BC5_SNORM.dds")]
+        [InlineData("BC5_UNORM.dds")]
+        [InlineData("BC6H_SF16.dds")]
+        [InlineData("BC6H_UF16.dds")]
+        [InlineData("BC7_UNORM_SRGB.dds")]
+        [InlineData("BC7_UNORM.dds")]
+        [InlineData("BGR.dds")]
+        [InlineData("BGRA.dds")]
+        [InlineData("BPTC_FLOAT.dds")]
+        [InlineData("BPTC.dds")]
+        [InlineData("DXT1.dds")]
+        [InlineData("DXT2.dds")]
+        [InlineData("DXT3.dds")]
+        [InlineData("DXT4.dds")]
+        [InlineData("DXT5.dds")]
+        [InlineData("FP16.dds")]
+        [InlineData("FP32.dds")]
+        [InlineData("G8R8_G8B8_UNORM.dds")]
+        [InlineData("R10G10B10_XR_BIAS_A2_UNORM.dds")]
+        [InlineData("R10G10B10A2_UINT.dds")]
+        [InlineData("R10G10B10A2_UNORM.dds")]
+        [InlineData("R11G11B10_FLOAT.dds")]
+        [InlineData("R16_FLOAT.dds")]
+        [InlineData("R16_SINT.dds")]
+        [InlineData("R16_SNORM.dds")]
+        [InlineData("R16_UINT.dds")]
+        [InlineData("R16_UNORM.dds")]
+        [InlineData("R16G16_FLOAT.dds")]
+        [InlineData("R16G16_SINT.dds")]
+        [InlineData("R16G16_SNORM.dds")]
+        [InlineData("R16G16_UINT.dds")]
+        [InlineData("R16G16_UNORM.dds")]
+        [InlineData("R16G16B16A16_FLOAT.dds")]
+        [InlineData("R16G16B16A16_SINT.dds")]
+        [InlineData("R16G16B16A16_SNORM.dds")]
+        [InlineData("R16G16B16A16_UINT.dds")]
+        [InlineData("R16G16B16A16_UNORM.dds")]
+        [InlineData("R32_FLOAT.dds")]
+        [InlineData("R32_SINT.dds")]
+        [InlineData("R32_UINT.dds")]
+        [InlineData("R32G32_FLOAT.dds")]
+        [InlineData("R32G32_SINT.dds")]
+        [InlineData("R32G32_UINT.dds")]
+        [InlineData("R32G32B32_FLOAT.dds")]
+        [InlineData("R32G32B32_SINT.dds")]
+        [InlineData("R32G32B32_UINT.dds")]
+        [InlineData("R32G32B32A32_FLOAT.dds")]
+        [InlineData("R32G32B32A32_SINT.dds")]
+        [InlineData("R32G32B32A32_UINT.dds")]
+        [InlineData("R8_SINT.dds")]
+        [InlineData("R8_SNORM.dds")]
+        [InlineData("R8_UINT.dds")]
+        [InlineData("R8_UNORM.dds")]
+        [InlineData("R8G8_B8G8_UNORM.dds")]
+        [InlineData("R8G8_SINT.dds")]
+        [InlineData("R8G8_SNORM.dds")]
+        [InlineData("R8G8_UINT.dds")]
+        [InlineData("R8G8_UNORM.dds")]
+        [InlineData("R8G8B8A8_SINT.dds")]
+        [InlineData("R8G8B8A8_SNORM.dds")]
+        [InlineData("R8G8B8A8_UINT.dds")]
+        [InlineData("R8G8B8A8_UNORM_SRGB.dds")]
+        [InlineData("R8G8B8A8_UNORM.dds")]
+        [InlineData("R9G9B9E5_SHAREDEXP.dds")]
+        [InlineData("RGBA.dds")]
+        [InlineData("Y210.dds")]
+        [InlineData("Y216.dds")]
+        [InlineData("Y410.dds")]
+        [InlineData("Y416.dds")]
+        [InlineData("YUY2.dds")]
+        [SuppressMessage("ReSharper", "StringLiteralTypo")]
+        public void TestDDSFileParser(string file)
         {
-            var files = Directory
-                .EnumerateFiles("files", "*.dds", SearchOption.TopDirectoryOnly)
-                .ToList();
-            Assert.NotEmpty(files);
-
-            foreach (var file in files)
-            {
-                Assert.True(File.Exists(file), $"File {file} does not exist!");
-                var ddsImage = new DDSImage(file);
-            }
+            file = $"files/{file}";
+            Assert.True(File.Exists(file), $"File {file} does not exist!");
+            var ddsImage = new DDSImage(file);
         }
     }
 }
