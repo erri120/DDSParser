@@ -89,7 +89,6 @@ namespace DDSParser
         private void ParseHeader(byte[] buffer)
         {
             var reader = new BinaryBufferReader(buffer);
-            //using var br = new BinaryReader(stream, Encoding.UTF8, true);
 
             var magic = reader.ReadUInt32();
             if (magic != Magic)
