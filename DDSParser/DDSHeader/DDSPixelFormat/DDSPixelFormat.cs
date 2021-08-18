@@ -2,6 +2,9 @@
 
 namespace DDSParser
 {
+    /// <summary>
+    /// The pixel format.
+    /// </summary>
     [PublicAPI]
     public struct DDSPixelFormat
     {

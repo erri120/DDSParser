@@ -11,6 +11,7 @@ namespace DDSParser
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum DXGIFormat : uint
     {
+#pragma warning disable 1591
         DXGI_FORMAT_UNKNOWN,
         DXGI_FORMAT_R32G32B32A32_TYPELESS,
         DXGI_FORMAT_R32G32B32A32_FLOAT,
@@ -133,5 +134,6 @@ namespace DDSParser
         DXGI_FORMAT_SAMPLER_FEEDBACK_MIN_MIP_OPAQUE,
         DXGI_FORMAT_SAMPLER_FEEDBACK_MIP_REGION_USED_OPAQUE,
         DXGI_FORMAT_FORCE_UINT
+#pragma warning restore 1591
     }
 }

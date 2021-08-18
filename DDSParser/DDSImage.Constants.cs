@@ -4,6 +4,9 @@ namespace DDSParser
 {
     public partial class DDSImage
     {
+        /// <summary>
+        /// File Magic of .dds files.
+        /// </summary>
         public const uint Magic = 0x20534444;
 
         #region Codec GUIDs

@@ -2,6 +2,9 @@
 
 namespace DDSParser
 {
+    /// <summary>
+    /// Optional DXT10 Header if <see cref="DDSPixelFormat.CharacterCode"/> equals <see cref="DDSPixelFormatCharacterCode.DX10"/>.
+    /// </summary>
     [PublicAPI]
     public struct DDSHeaderDXT10
     {

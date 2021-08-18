@@ -21,6 +21,11 @@ namespace DDSParser
         /// </summary>
         public DDSHeaderDXT10? HeaderDXT10 { get; private set; }
 
+        /// <summary>
+        /// Loads the DDS file from a path.
+        /// </summary>
+        /// <param name="path">The file to load.</param>
+        /// <exception cref="FileNotFoundException">The file specified in <paramref name="path"/> does not exist.</exception>
         public DDSImage(string path)
         {
             if (!File.Exists(path))
@@ -30,6 +35,11 @@ namespace DDSParser
             ParseHeader(fs);
         }
 
+        /// <summary>
+        /// Loads the DDS file from a <see cref="FileInfo"/>.
+        /// </summary>
+        /// <param name="file">The FileInfo of the file to load.</param>
+        /// <exception cref="FileNotFoundException">The file specified in <paramref name="file"/> does not exist.</exception>
         public DDSImage(FileInfo file)
         {
             if (!file.Exists)
@@ -39,6 +49,11 @@ namespace DDSParser
             ParseHeader(fs);
         }
 
+        /// <summary>
+        /// Loads the DDS file from a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream">The Stream with the contents of the DDS file.</param>
+        /// <exception cref="NotSupportedException">The Stream does not support reading or seeking.</exception>
         public DDSImage(Stream stream)
         {
             if (!stream.CanRead)
@@ -48,6 +63,10 @@ namespace DDSParser
             ParseHeader(stream);
         }
 
+        /// <summary>
+        /// Loads the DDS file from a raw byte array.
+        /// </summary>
+        /// <param name="data">Data of the DDS file.</param>
         public DDSImage(byte[] data)
         {
             using var ms = new MemoryStream(data, 0, data.Length, false);

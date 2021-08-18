@@ -13,6 +13,8 @@ namespace DDSParser
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum DDSResourceMiscFlag : uint
     {
+#pragma warning disable 1591
         DDS_RESOURCE_MISC_TEXTURECUBE = 0x4,
+#pragma warning restore 1591
     }
 }
