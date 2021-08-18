@@ -9,6 +9,7 @@ ProjectSection(SolutionItems) = preProject
 	.editorconfig = .editorconfig
 	.gitignore = .gitignore
 	LICENSE = LICENSE
+	README.md = README.md
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDSParser.Benchmark", "DDSParser.Benchmark\DDSParser.Benchmark.csproj", "{8196B5F1-F00D-4881-B7BF-3F95AF964491}"
