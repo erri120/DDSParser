@@ -31,7 +31,8 @@ namespace DDSParser
             if (!File.Exists(path))
                 throw new FileNotFoundException("File does not exist!", path);
 
-            using var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read,
+                BufferSizeForHeader, FileOptions.SequentialScan);
             ParseHeader(fs);
         }
 
@@ -45,7 +46,8 @@ namespace DDSParser
             if (!file.Exists)
                 throw new FileNotFoundException("File does not exist!", file.FullName);
 
-            using var fs = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
+            using var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read,
+                BufferSizeForHeader, FileOptions.SequentialScan);
             ParseHeader(fs);
         }
 
@@ -69,7 +71,7 @@ namespace DDSParser
         /// <param name="data">Data of the DDS file.</param>
         public DDSImage(byte[] data)
         {
-            using var ms = new MemoryStream(data, 0, data.Length, false);
+            using var ms = new MemoryStream(data, 0, Math.Min(BufferSizeForHeader, data.Length), false);
             ParseHeader(ms);
         }
 

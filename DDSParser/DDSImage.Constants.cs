@@ -4,6 +4,8 @@ namespace DDSParser
 {
     public partial class DDSImage
     {
+        private const int BufferSizeForHeader = 256;
+
         /// <summary>
         /// File Magic of .dds files.
         /// </summary>

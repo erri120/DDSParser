@@ -1,5 +1,13 @@
-﻿using BenchmarkDotNet.Running;
-using DDSParser.Benchmark;
+﻿using System.Reflection;
+using BenchmarkDotNet.Running;
 
-BenchmarkRunner.Run<FromFileBenchmarks>();
-BenchmarkRunner.Run<FromByteArrayBenchmarks>();
+namespace DDSParser.Benchmark
+{
+    public static class Program
+    {
+        public static void Main(string[] args)
+        {
+            BenchmarkRunner.Run(Assembly.GetExecutingAssembly());
+        }
+    }
+}
