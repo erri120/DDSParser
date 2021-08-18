@@ -113,7 +113,7 @@ namespace DDSParser
 
             var dwFlags = (DDSPixelFormatFlags)br.ReadUInt32();
             pixelFormat.Flags = dwFlags;
-            pixelFormat.CharacterCode = SetIfDefined<DDSPixelFormatCharacterCode>(br.ReadUInt32());
+            pixelFormat.CharacterCode = (DDSPixelFormatCharacterCode)br.ReadUInt32();
             pixelFormat.RGBBitCount = br.ReadUInt32();
             pixelFormat.RBitMask = br.ReadUInt32();
             pixelFormat.GBitMask = br.ReadUInt32();
@@ -127,22 +127,14 @@ namespace DDSParser
         {
             var header = new DDSHeaderDXT10
             {
-                Format = SetIfDefined<DXGIFormat>(br.ReadUInt32()),
-                ResourceDimension = SetIfDefined<DDSResourceDimension>(br.ReadUInt32()),
+                Format = (DXGIFormat)br.ReadUInt32(),
+                ResourceDimension = (DDSResourceDimension)br.ReadUInt32(),
                 MiscFlag = (DDSResourceMiscFlag)br.ReadUInt32(),
                 ArraySize = br.ReadUInt32(),
                 AlphaMode = (DDSAlphaMode)br.ReadUInt32()
             };
 
             return header;
-        }
-
-        private static T SetIfDefined<T>(uint value)
-        {
-            if (!Enum.IsDefined(typeof(T), value))
-                throw new NotImplementedException($"{typeof(T)}: {value}");
-            var obj = Enum.ToObject(typeof(T), value);
-            return (T)obj;
         }
     }
 }
