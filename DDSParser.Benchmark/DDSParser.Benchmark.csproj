@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+      <PackageReference Include="DdsKtxSharp" Version="1.1.0.1" />
+      <PackageReference Include="DDSReader" Version="1.0.8-pre" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DDSParser\DDSParser.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="files\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+</Project>
