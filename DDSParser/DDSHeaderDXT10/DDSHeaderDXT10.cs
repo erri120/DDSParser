@@ -8,6 +8,8 @@ namespace DDSParser
     [PublicAPI]
     public struct DDSHeaderDXT10
     {
+        internal const uint Size = 5 * sizeof(uint);
+
         /// <summary>
         /// The surface pixel format.
         /// </summary>

@@ -21,6 +21,11 @@ namespace DDSParser
         public DDSHeaderDXT10? HeaderDXT10 { get; private set; }
 
         /// <summary>
+        /// Position of the data after the header(s).
+        /// </summary>
+        public int DataPosition => (int)(DDSHeader.Size + (HeaderDXT10 == null ? 0 : DDSHeaderDXT10.Size));
+
+        /// <summary>
         /// Loads the DDS file from a path.
         /// </summary>
         /// <param name="path">The file to load.</param>
@@ -82,7 +87,6 @@ namespace DDSParser
         /// <param name="data">Data of the DDS file.</param>
         public DDSImage(byte[] data)
         {
-            //using var ms = new MemoryStream(data, 0, Math.Min(BufferSizeForHeader, data.Length), false);
             ParseHeader(data);
         }
 
