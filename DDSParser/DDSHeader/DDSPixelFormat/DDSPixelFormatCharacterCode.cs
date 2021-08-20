@@ -71,6 +71,11 @@ namespace DDSParser
         BC5S = 0x53354342,
 
         /// <summary>
+        /// ATI2
+        /// </summary>
+        ATI2 = 0x32495441,
+
+        /// <summary>
         /// DXGI_FORMAT_R8G8_B8G8_UNORM<br/>
         /// D3DFMT_R8G8_B8G8
         /// </summary>
