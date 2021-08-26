@@ -2,10 +2,8 @@
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
-
-        <TargetFrameworks>net5.0;net6.0;netcoreapp3.1</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>

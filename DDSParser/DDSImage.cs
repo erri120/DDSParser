@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.IO;
+using BinaryShenanigans.Reader;
 using JetBrains.Annotations;
 
 namespace DDSParser
@@ -87,47 +89,56 @@ namespace DDSParser
         /// <param name="data">Data of the DDS file.</param>
         public DDSImage(byte[] data)
         {
+            ParseHeader(new ReadOnlySpan<byte>(data, 0, Math.Min(data.Length, BufferSizeForHeader)));
+        }
+
+        /// <summary>
+        /// Loads the DDS file from a ReadOnlySpan.
+        /// </summary>
+        /// <param name="data"></param>
+        public DDSImage(ReadOnlySpan<byte> data)
+        {
             ParseHeader(data);
         }
 
-        private void ParseHeader(byte[] buffer)
+        private void ParseHeader(ReadOnlySpan<byte> data)
         {
-            var reader = new BinaryBufferReader(buffer);
+            var reader = new SpanReader(0, data.Length);
 
-            var magic = reader.ReadUInt32();
+            var magic = reader.ReadUInt32(data);
             if (magic != Magic)
                 throw new InvalidDataException($"Invalid magic number for DDS Stream: 0x{magic:X} instead of 0x{Magic:X}");
 
-            Header = ParseDDSHeader(reader);
+            Header = ParseDDSHeader(reader, data);
 
             if (Header.PixelFormat.CharacterCode == DDSPixelFormatCharacterCode.DX10)
-                HeaderDXT10 = ParseDXT10Header(reader);
+                HeaderDXT10 = ParseDXT10Header(reader, data);
         }
 
-        private static DDSHeader ParseDDSHeader(BinaryBufferReader reader)
+        private static DDSHeader ParseDDSHeader(SpanReader reader, ReadOnlySpan<byte> data)
         {
-            var dwSize = reader.ReadUInt32();
+            var dwSize = reader.ReadUInt32(data);
             if (dwSize != DDSHeader.Size)
                 throw new DDSStructSizeMismatchException(DDSHeader.Size, dwSize, nameof(DDSHeader));
 
             var header = new DDSHeader();
 
-            var dwFlags = (DDSHeaderFlags)reader.ReadUInt32();
+            var dwFlags = (DDSHeaderFlags)reader.ReadUInt32(data);
             header.Flags = dwFlags;
 
-            header.Height = reader.ReadUInt32();
-            header.Width = reader.ReadUInt32();
-            header.PitchOrLinearSize = reader.ReadUInt32();
-            header.Depth = reader.ReadUInt32();
-            header.MipMapCount = reader.ReadUInt32();
+            header.Height = reader.ReadUInt32(data);
+            header.Width = reader.ReadUInt32(data);
+            header.PitchOrLinearSize = reader.ReadUInt32(data);
+            header.Depth = reader.ReadUInt32(data);
+            header.MipMapCount = reader.ReadUInt32(data);
 
             // dwReserved1[11]
             reader.SkipBytes(sizeof(uint) * 11);
 
-            header.PixelFormat = ParseDDSPixelFormat(reader);
+            header.PixelFormat = ParseDDSPixelFormat(reader, data);
 
-            header.Caps = (DDSCaps)reader.ReadUInt32();
-            header.Caps2 = (DDSCaps2)reader.ReadUInt32();
+            header.Caps = (DDSCaps)reader.ReadUInt32(data);
+            header.Caps2 = (DDSCaps2)reader.ReadUInt32(data);
 
             // dwCaps3
             reader.SkipBytes(sizeof(uint));
@@ -139,35 +150,35 @@ namespace DDSParser
             return header;
         }
 
-        private static DDSPixelFormat ParseDDSPixelFormat(BinaryBufferReader reader)
+        private static DDSPixelFormat ParseDDSPixelFormat(SpanReader reader, ReadOnlySpan<byte> data)
         {
-            var dwSize = reader.ReadUInt32();
+            var dwSize = reader.ReadUInt32(data);
             if (dwSize != DDSPixelFormat.Size)
                 throw new DDSStructSizeMismatchException(DDSPixelFormat.Size, dwSize, nameof(DDSPixelFormat));
 
             var pixelFormat = new DDSPixelFormat();
 
-            var dwFlags = (DDSPixelFormatFlags)reader.ReadUInt32();
+            var dwFlags = (DDSPixelFormatFlags)reader.ReadUInt32(data);
             pixelFormat.Flags = dwFlags;
-            pixelFormat.CharacterCode = (DDSPixelFormatCharacterCode)reader.ReadUInt32();
-            pixelFormat.RGBBitCount = reader.ReadUInt32();
-            pixelFormat.RBitMask = reader.ReadUInt32();
-            pixelFormat.GBitMask = reader.ReadUInt32();
-            pixelFormat.BBitMask = reader.ReadUInt32();
-            pixelFormat.ABitMask = reader.ReadUInt32();
+            pixelFormat.CharacterCode = (DDSPixelFormatCharacterCode)reader.ReadUInt32(data);
+            pixelFormat.RGBBitCount = reader.ReadUInt32(data);
+            pixelFormat.RBitMask = reader.ReadUInt32(data);
+            pixelFormat.GBitMask = reader.ReadUInt32(data);
+            pixelFormat.BBitMask = reader.ReadUInt32(data);
+            pixelFormat.ABitMask = reader.ReadUInt32(data);
 
             return pixelFormat;
         }
 
-        private static DDSHeaderDXT10 ParseDXT10Header(BinaryBufferReader reader)
+        private static DDSHeaderDXT10 ParseDXT10Header(SpanReader reader, ReadOnlySpan<byte> data)
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var header = new DDSHeaderDXT10();
-            header.Format = (DXGIFormat)reader.ReadUInt32();
-            header.ResourceDimension = (DDSResourceDimension)reader.ReadUInt32();
-            header.MiscFlag = (DDSResourceMiscFlag)reader.ReadUInt32();
-            header.ArraySize = reader.ReadUInt32();
-            header.AlphaMode = (DDSAlphaMode)reader.ReadUInt32();
+            header.Format = (DXGIFormat)reader.ReadUInt32(data);
+            header.ResourceDimension = (DDSResourceDimension)reader.ReadUInt32(data);
+            header.MiscFlag = (DDSResourceMiscFlag)reader.ReadUInt32(data);
+            header.ArraySize = reader.ReadUInt32(data);
+            header.AlphaMode = (DDSAlphaMode)reader.ReadUInt32(data);
 
             return header;
         }
